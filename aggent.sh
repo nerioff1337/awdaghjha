@@ -42,10 +42,11 @@ class StatsAgent(BaseHTTPRequestHandler):
             available_ram = int(lines[2].split()[1]) # MemAvailable
             ram_usage = int((total_ram - available_ram) / total_ram * 100)
             
-            # 3. Считаем активные подключения к порту 8443
-            cmd_users = "ss -Htn state established sport eq :8443 | wc -l"
+            # 3. Считаем активные подключения прямо внутри сети Docker-контейнера
+            # Читаем /proc/net/tcp внутри контейнера mtproxy. Состояние ' 01 ' = ESTABLISHED.
+            cmd_users = "docker exec mtproxy cat /proc/net/tcp /proc/net/tcp6 2>/dev/null | grep -c ' 01 ' || true"
             users_output = subprocess.check_output(cmd_users, shell=True).decode('utf-8').strip()
-            users_count = int(users_output)
+            users_count = int(users_output) if users_output else 0
             
             # 4. Получаем uptime сервера
             with open('/proc/uptime', 'r') as f:
