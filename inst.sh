@@ -18,7 +18,7 @@ fi
 
 # 2. Твои данные
 RAW_SECRET="66201f1254d49da996da7be6f48bf4e9"
-DOMAIN_HEX="7275747562652e7275" # rutube.ru
+DOMAIN_HEX="77696b6970656469612e6f7267" # wikipedia.org
 FULL_SECRET="ee${RAW_SECRET}${DOMAIN_HEX}"
 CONF_PATH="/tmp/mtg.toml"
 
